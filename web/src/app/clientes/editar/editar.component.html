@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark" >
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/">Home</a>
+        <a class="nav-item nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Edição de cliente</a>
+    </div>
+</nav>
+
+<div class="p-4">
+<div class="container">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+        <div class="form-group col">
+            <label for="nome">Nome</label>
+            <input type="text" formControlName="nome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
+            <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
+                <div *ngIf="f.nome.errors.required">Informe o nome.</div>
+            </div>
+        </div>
+        <div class="form-group col">
+            <label for="cpfCnpj">CPF/CNPJ</label>
+            <input type="text" formControlName="cpfCnpj" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cpfCnpj.errors }" />
+            <div *ngIf="submitted && f.cpfCnpj.errors" class="invalid-feedback">
+                <div *ngIf="f.cpfCnpj.errors.required">Informe o CPF/CNPJ</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <h5>Endereço</h5>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <button type="button" (click)="addEnderecoNovaLinha()" class="btn btn-sm btn-primary">Adicionar endereço</button>
+        </div>
+    </div>
+      
+        <table class="table table-bordered" formArrayName="enderecos">
+          <tr *ngFor="let endereco of enderecos().controls; let i=index" [formGroupName]="i">
+            <td>
+                <label for="rua">Rua</label>
+                <input type="text" formControlName="rua" class="form-control">
+            </td>
+            <td>
+                <label for="bairro">Bairro</label>
+                <input type="text" formControlName="bairro" class="form-control">
+            </td>
+            <td>
+                <label for="numero">Número</label>
+                <input type="number" formControlName="numero" class="form-control">
+            </td>
+            <td>
+                <label for="principal">Principal</label>
+                <input type="checkbox" formControlName="principal" class="form-control">
+            </td>
+            <td>
+                <button type="button" (click)="removerEnderecoLinha(i)" class="btn btn-remover btn-sm btn-danger">Remover</button>
+            </td>
+          </tr>
+        </table>
+     
+    <!--contato-->
+    <div class="form-row">
+        <h5>Contato</h5>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <button type="button" (click)="addContatoNovaLinha()" class="btn btn-sm btn-primary">Adicionar telefone</button>
+        </div>
+    </div>
+
+    <table class="table table-bordered" formArrayName="contatos">
+        <tr *ngFor="let contato of contatos().controls; let i=index" [formGroupName]="i">
+          <td>
+              <label for="">Telefone</label>
+              <input type="text" formControlName="telefone" mask="(000) 00000-0000" class="form-control">
+          </td>
+          <td>
+              <button type="button" (click)="removerContatoLinha(i)" class="btn btn-remover-contato btn-sm btn-danger">Remover</button>
+          </td>
+        </tr>
+      </table>
+
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-success">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Salvar
+        </button>
+        <a routerLink="/" class="btn btn-link">Voltar</a>
+    </div>
+</form>
+</div>
+</div>

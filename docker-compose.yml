@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    volumes: 
+      - ./init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres 
+    ports:
+      - 5432:5432
+    networks:
+      - postgres-network
+
+  web:
+    build: web/.
+    networks:
+      - postgres-network
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+  
+  api:
+    build: api/.
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres-network
+    depends_on:
+      - postgres
+
+networks:
+    postgres-network:
+        driver: bridge

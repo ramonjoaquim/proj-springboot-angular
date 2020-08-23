@@ -1,0 +1,48 @@
+﻿<nav class="navbar navbar-expand navbar-dark bg-dark" >
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="nav-item nav-link" (click)="logout()">Sair</a>
+    </div>
+</nav>
+<br>
+
+<div class="p-4">
+<div class="container">
+
+<h4>Listagem de clientes</h4>
+<br>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Adicionar cliente</a>
+<table class="table table-md table-hover table-bordered">
+    <thead>
+        <tr>
+            <th style="width: 30%">Nome</th>
+            <th style="width: 30%">CPF/CNPJ</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cliente of clientes">
+            <td>{{cliente.nome}}</td>
+            <td>{{cliente.cpfCnpj | CPFCNPJ}}</td>
+            <td style="white-space: nowrap">
+                <a routerLink="details/{{cliente.id}}" class="btn btn-sm btn-warning mr-1">Visualizar</a>
+                <a routerLink="edit/{{cliente.id}}" class="btn btn-sm btn-primary mr-1">Editar</a>
+                <button (click)="deleteCliente(cliente.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="cliente.isDeleting">
+                    <span *ngIf="cliente.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!cliente.isDeleting">Deletar</span>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="!clientes">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+</div>
+
+
+ 
+    
