@@ -21,7 +21,7 @@
 
 ### Build
 
-- Compilado SprigBoot
+- Compilando SprigBoot
     - na pasta api rodar
 
 ```unix
