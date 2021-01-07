@@ -1,4 +1,4 @@
-# Projeto SpringBoot+Angular
+# Projeto SpringBoot+Angular - cadastro de clientes
 
 ## Tecnologias da stack
 
@@ -8,8 +8,6 @@
 - bootStrap 4
 - Postgres
 - Docker
-
-- Projeto construído em ambiente linux.
 
 ## Configurar o projeto no seu ambiente
 
