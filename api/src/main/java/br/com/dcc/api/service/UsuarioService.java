@@ -3,12 +3,12 @@ package br.com.dcc.api.service;
 import br.com.dcc.api.exception.ExceptionNotFound;
 import br.com.dcc.api.model.Usuario;
 import br.com.dcc.api.repository.IUsuarioRepository;
-import br.com.dcc.api.repository.IUsuarioService;
 import br.com.dcc.api.utils.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
-    IUsuarioRepository repository;
+    private IUsuarioRepository repository;
 
     @Override
     public List<Usuario> getUsuarios() {
@@ -26,17 +26,17 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public ValidationResult add(Usuario usuario) {
         Optional<Usuario> optionalUsuario = Optional.ofNullable(repository.findByLogin(usuario.getLogin()));
-        if(!optionalUsuario.isEmpty())
+        if (optionalUsuario.isPresent())
             return new ValidationResult(true, "Usuário já cadastrado.");
 
-        if(usuario.getLogin().isEmpty() || usuario.getLogin().isBlank())
+        if (usuario.getLogin().isBlank())
             return new ValidationResult(true, "Informe um login.");
 
-        if(usuario.getSenha().isEmpty() || usuario.getSenha().isBlank())
+        if ( usuario.getSenha().isBlank())
             return new ValidationResult(true, "Informe uma senha.");
 
         usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
-        repository.save(toEntity(usuario));
+        repository.save(usuario);
 
         return new ValidationResult(false);
     }
@@ -45,15 +45,11 @@ public class UsuarioService implements IUsuarioService {
     public ValidationResult getUsuarioById(long id) {
         Optional<Usuario> optionalUsuario = repository.findById(id);
         try {
-            optionalUsuario.orElseThrow(() -> new ExceptionNotFound("Usuário não encontrado com id: " + id));
-        }catch (ExceptionNotFound e){
+            optionalUsuario.orElseThrow(() -> new ExceptionNotFound(MessageFormat.format("Usuário não encontrado com id: {0}", id)));
+        } catch (ExceptionNotFound e) {
             return new ValidationResult(true, e.getMessage());
         }
-        return new ValidationResult(optionalUsuario, false, null);
-    }
 
-    private Usuario toEntity(Usuario usuario) {
-        Usuario entity = usuario;
-        return entity;
+        return new ValidationResult(optionalUsuario, false, null);
     }
 }

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService service;
+    private UsuarioService service;
 
     @PostMapping("/registrar")
-    public ResponseEntity addUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> addUsuario(@RequestBody Usuario usuario) {
         ValidationResult response = service.add(usuario);
-        if(!response.getError())
+        if (!response.getError())
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .build();

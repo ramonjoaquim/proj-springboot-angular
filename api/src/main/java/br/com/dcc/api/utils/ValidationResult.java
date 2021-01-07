@@ -1,5 +1,10 @@
 package br.com.dcc.api.utils;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ValidationResult {
 
     private String message;
@@ -10,6 +15,7 @@ public class ValidationResult {
         this.setMessage(message);
         this.setError(error);
     }
+
     public ValidationResult(Boolean error) {
         this.setError(error);
     }
@@ -23,29 +29,5 @@ public class ValidationResult {
         this.setMessage(message);
         this.setError(error);
         this.setObject(object);
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    private void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Boolean getError() {
-        return this.error;
-    }
-
-    private void setError(Boolean error) {
-        this.error = error;
-    }
-
-    public Object getObject() {
-        return object;
-    }
-
-    private void setObject(Object object) {
-        this.object = object;
     }
 }

@@ -24,14 +24,14 @@ public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
         return authenticationManagerBean();
     }
 
-    @Autowired
-    public void authenticationManager(AuthenticationManagerBuilder builder, IUsuarioRepository usuarioRepository) throws Exception {
-        builder.userDetailsService(login -> new UsuarioCustomDTO(usuarioRepository.findByLogin(login)));
-    }
-
     @Bean
     public static BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    public void authenticationManager(AuthenticationManagerBuilder builder, IUsuarioRepository usuarioRepository) throws Exception {
+        builder.userDetailsService(login -> new UsuarioCustomDTO(usuarioRepository.findByLogin(login)));
     }
 
 }

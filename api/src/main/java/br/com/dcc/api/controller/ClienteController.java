@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +14,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/cliente", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ClienteController{
+public class ClienteController {
+
     @Autowired
-    ClienteService service;
+    private ClienteService clienteService;
+
+    @Autowired
+    private ValidationResult response;
 
     @GetMapping
     public List<Cliente> getClientes() {
-        return service.getClientes();
+        return clienteService.getClientes();
     }
 
     @PostMapping
-    public ResponseEntity AddCliente(@RequestBody Cliente cliente) {
-        ValidationResult response = service.add(cliente);
-            if(!response.getError())
+    public ResponseEntity<?> AddCliente(@RequestBody Cliente cliente) {
+        response = clienteService.add(cliente);
+            if (!response.getError())
                 return ResponseEntity
                         .status(HttpStatus.CREATED)
                         .build();
@@ -39,9 +42,9 @@ public class ClienteController{
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity Update(@PathVariable(required = true) long id, @RequestBody Cliente cliente){
-        ValidationResult response = service.update(id, cliente);
-        if(!response.getError())
+    public ResponseEntity<?> Update(@PathVariable() long id, @RequestBody Cliente cliente){
+        response = clienteService.update(id, cliente);
+        if (!response.getError())
             return ResponseEntity
                     .ok()
                     .build();
@@ -52,9 +55,9 @@ public class ClienteController{
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable(required = true) long id) {
-        ValidationResult response = service.getClienteById(id);
-        if(!response.getError())
+    public ResponseEntity<?> getById(@PathVariable() long id) {
+        response = clienteService.getClienteById(id);
+        if (!response.getError())
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(response);
@@ -66,9 +69,9 @@ public class ClienteController{
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable(required = true) long id) {
-        ValidationResult response = service.delete(id);
-        if(!response.getError())
+    public ResponseEntity<?> delete(@PathVariable() long id) {
+        response = clienteService.delete(id);
+        if (!response.getError())
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)
                     .build();

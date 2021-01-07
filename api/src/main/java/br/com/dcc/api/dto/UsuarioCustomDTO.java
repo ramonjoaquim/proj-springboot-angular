@@ -8,8 +8,8 @@ import java.util.Collection;
 
 public class UsuarioCustomDTO implements UserDetails {
 
-    private String login;
-    private String senha;
+    private final String login;
+    private final String senha;
 
     public UsuarioCustomDTO(Usuario usuario) {
         this.login = usuario.getLogin();

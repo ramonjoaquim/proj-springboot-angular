@@ -1,4 +1,4 @@
-package br.com.dcc.api.repository;
+package br.com.dcc.api.service;
 
 import br.com.dcc.api.model.Cliente;
 import br.com.dcc.api.utils.ValidationResult;

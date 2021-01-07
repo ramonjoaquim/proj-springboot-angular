@@ -22,17 +22,14 @@ public class AuthorizationSeverConfig extends AuthorizationServerConfigurerAdapt
 
     private static final Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 60 * 60 * 24;
     private static final Integer REFRESH_TOKEN_VALIDITY_IN_SECONDS = 60 * 60 * 24;
-
-    @Value("${security.oauth2.client-id}")
-    private String CLIENT;
-    @Value("${security.oauth2.client-secret}")
-    private String SECRET;
+    @Value("${security.oauth2.client-id}") private String CLIENT;
+    @Value("${security.oauth2.client-secret}") private String SECRET;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()")
                 .allowFormAuthenticationForClients();
@@ -58,7 +55,7 @@ public class AuthorizationSeverConfig extends AuthorizationServerConfigurerAdapt
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST);
     }
